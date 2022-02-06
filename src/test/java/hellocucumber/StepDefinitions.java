@@ -1,5 +1,6 @@
 package hellocucumber;
 
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,6 +14,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,7 +49,7 @@ public class StepDefinitions {
     }
     @Then("I should see {string} products in suggest list")
     public void i_should_see_products_in_suggest_list(String searchText) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement suggestList = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".product-list")));
         String suggestText = suggestList.getText();
 
@@ -59,14 +62,14 @@ public class StepDefinitions {
         WebElement myAccount = driver.findElement(By.cssSelector("#myAccount"));
         Actions builder = new Actions(driver);
         builder.moveToElement(myAccount).perform();
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement loginButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#login")));
         loginButton.click();
     }
 
     @When("I login with {string} email and {string} password")
     public void iLoginWithEmailAndPassword(String email, String password) {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement eMailElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("txtUserName")));
         eMailElement.click();
         Actions actions = new Actions(driver);
@@ -84,5 +87,10 @@ public class StepDefinitions {
     @Then("I see my name")
     public void iSeeMyName() {
         // TODO find user anme input exist
+    }
+
+    @After()
+    public void closeBrowser() {
+        driver.quit();
     }
 }
